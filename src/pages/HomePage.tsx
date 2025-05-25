@@ -51,8 +51,8 @@ const featuredServices: Service[] = [
 const topProviders: Provider[] = [
   {
     id: '1',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
+    name: 'Rahul Das',
+    email: 'rahul@example.com',
     role: 'provider',
     services: ['plumbing', 'electrical'],
     bio: 'Professional plumber with 15 years of experience in residential and commercial projects.',
@@ -71,8 +71,8 @@ const topProviders: Provider[] = [
   },
   {
     id: '2',
-    name: 'Sarah Miller',
-    email: 'sarah@example.com',
+    name: 'Rahima Begum',
+    email: 'rahima@example.com',
     role: 'provider',
     services: ['cleaning', 'painting'],
     bio: 'Detail-oriented cleaning professional specializing in eco-friendly products and methods.',
@@ -89,8 +89,8 @@ const topProviders: Provider[] = [
   },
   {
     id: '3',
-    name: 'David Chen',
-    email: 'david@example.com',
+    name: 'Apu Hasan',
+    email: 'apu@example.com',
     role: 'provider',
     services: ['carpentry', 'electrical'],
     bio: 'Licensed electrician and carpenter with expertise in home renovations and custom furniture.',
@@ -109,21 +109,21 @@ const topProviders: Provider[] = [
 
 const testimonials = [
   {
-    name: 'Emily Wilson',
+    name: 'Fahim',
     service: 'Plumbing Services',
     rating: 5,
     date: 'June 12, 2023',
     text: 'The plumber arrived on time and fixed our leaking pipe quickly. Very professional service and reasonable pricing.',
   },
   {
-    name: 'Michael Davis',
+    name: 'Robin',
     service: 'Electrical Repair',
     rating: 5,
     date: 'May 3, 2023',
     text: 'Had an electrical issue that was causing breakers to trip. The electrician diagnosed and fixed the problem in one visit. Great service!',
   },
   {
-    name: 'Jennifer Lopez',
+    name: 'Tui Khatun',
     service: 'House Cleaning',
     rating: 4,
     date: 'July 21, 2023',

@@ -100,19 +100,19 @@ const Footer: React.FC = () => {
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-gray-400 mr-2 mt-0.5" />
                 <span className="text-gray-400">
-                  123 Service Street, Anytown, AN 12345
+                  Bijoy-24,Dumki,Patuakhali.
                 </span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-gray-400 mr-2" />
                 <a href="tel:+11234567890" className="text-gray-400 hover:text-white transition-colors">
-                  (123) 456-7890
+                  +8801952261206
                 </a>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-gray-400 mr-2" />
-                <a href="mailto:info@homefix.com" className="text-gray-400 hover:text-white transition-colors">
-                  info@homefix.com
+                <a href="mailto:rahuldas18@cse.pstu.ac.bd" className="text-gray-400 hover:text-white transition-colors">
+                  rahuldas18@cse.pstu.ac.bd
                 </a>
               </li>
             </ul>

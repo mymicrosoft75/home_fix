@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BDT',
   }).format(amount);
 }
 
@@ -20,8 +20,8 @@ export function truncateText(text: string, maxLength: number): string {
 export function generateTimeSlots(startHour: number = 8, endHour: number = 18): string[] {
   const slots: string[] = [];
   for (let hour = startHour; hour < endHour; hour++) {
-    slots.push(`${hour}:00`);
-    slots.push(`${hour}:30`);
+    slots.push(`BDT{hour}:00`);
+    slots.push(`BDT{hour}:30`);
   }
   return slots;
 }
