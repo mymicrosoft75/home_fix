@@ -1,62 +1,69 @@
-export type UserRole = 'client' | 'provider' | 'admin';
+export type UserRole = 'admin' | 'provider' | 'client';
+
+export type ServiceCategory = 'plumbing' | 'electrical' | 'cleaning' | 'carpentry' | 'painting' | 'gardening';
+
+export type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
 
 export interface User {
   id: string;
   name: string;
   email: string;
   role: UserRole;
-  avatar?: string;
   phone?: string;
   address?: string;
-  createdAt: string;
+  avatar_url?: string;
+  created_at: string;
+  updated_at: string;
 }
-
-export interface Provider extends User {
-  services: string[];
-  bio: string;
-  rating: number;
-  hourlyRate: number;
-  availability: {
-    [day: string]: string[]; // e.g., { "Monday": ["9:00", "10:00", "11:00"] }
-  };
-  completedJobs: number;
-}
-
-export type ServiceCategory = 'plumbing' | 'electrical' | 'cleaning' | 'carpentry' | 'painting' | 'gardening';
 
 export interface Service {
   id: string;
   name: string;
   category: ServiceCategory;
-  description: string;
+  description?: string;
   price: number;
-  image: string;
-  duration: number; // in hours
+  duration: number;
+  image_url?: string;
+  created_at: string;
+  updated_at: string;
 }
-
-export type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
 
 export interface Booking {
   id: string;
-  clientId: string;
-  providerId: string;
-  serviceId: string;
+  client_id: string;
+  provider_id: string;
+  service_id: string;
   date: string;
-  timeSlot: string;
+  time_slot: string;
   status: BookingStatus;
   total: number;
   notes?: string;
-  createdAt: string;
+  created_at: string;
+  updated_at: string;
 }
+
+export interface ProviderProfile {
+  id: string;
+  bio?: string;
+  hourly_rate: number;
+  rating: number;
+  completed_jobs: number;
+  created_at: string;
+  updated_at: string;
+  availability?: {
+    [day: string]: string[];
+  };
+}
+
 
 export interface Review {
   id: string;
-  bookingId: string;
-  clientId: string;
-  providerId: string;
+  booking_id: string;
+  client_id: string;
+  provider_id: string;
   rating: number;
   comment?: string;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface FilterOptions {

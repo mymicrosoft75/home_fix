@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User, LogIn, Home, Wrench, Calendar, ChevronDown } from 'lucide-react';
+import { Menu, X, User, LogIn, Home, Wrench, Calendar, ChevronDown, LogOut } from 'lucide-react';
 import { cn } from '../../lib/utils';
-
-// This would come from authentication context in a real app
-const isAuthenticated = false;
-const userRole = 'client';
+import { useAuth } from '../../contexts/AuthContext';
+import { signOut } from '../../lib/supabase';
 
 const Header: React.FC = () => {
+  const { isAuthenticated, userRole } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -22,9 +22,28 @@ const Header: React.FC = () => {
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const closeMenu = () => setIsMenuOpen(false);
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+    setIsProfileMenuOpen(false);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    closeMenu();
+  };
 
   const isActive = (path: string) => location.pathname === path;
+
+  const getDashboardLink = () => {
+    switch (userRole) {
+      case 'admin':
+        return '/admin';
+      case 'provider':
+        return '/provider';
+      default:
+        return '/';
+    }
+  };
 
   return (
     <header 
@@ -61,41 +80,61 @@ const Header: React.FC = () => {
           >
             Services
           </Link>
-          <div className="relative group">
-            <button className="flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors">
-              Categories <ChevronDown className="h-4 w-4" />
-            </button>
-            <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-              <div className="py-2">
-                <Link to="/services?category=plumbing" className="block px-4 py-2 text-sm hover:bg-muted transition-colors">Plumbing</Link>
-                <Link to="/services?category=electrical" className="block px-4 py-2 text-sm hover:bg-muted transition-colors">Electrical</Link>
-                <Link to="/services?category=cleaning" className="block px-4 py-2 text-sm hover:bg-muted transition-colors">Cleaning</Link>
-                <Link to="/services?category=carpentry" className="block px-4 py-2 text-sm hover:bg-muted transition-colors">Carpentry</Link>
-                <Link to="/services?category=painting" className="block px-4 py-2 text-sm hover:bg-muted transition-colors">Painting</Link>
-              </div>
-            </div>
-          </div>
         </nav>
 
-        {/* Auth Buttons - Desktop */}
+        {/* Desktop Auth/Profile Menu */}
         <div className="hidden md:flex items-center gap-4">
           {isAuthenticated ? (
-            <>
-              {userRole === 'admin' && (
-                <Link to="/admin" className="btn btn-ghost btn-sm">
-                  Admin
-                </Link>
+            <div className="relative">
+              <button
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
+              >
+                <User className="h-5 w-5" />
+                <span>My Account</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+
+              {isProfileMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                  <div className="py-1">
+                    <Link
+                      to={getDashboardLink()}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={closeMenu}
+                    >
+                      {userRole === 'admin' ? 'Admin Dashboard' : 
+                       userRole === 'provider' ? 'Provider Dashboard' : 
+                       'My Dashboard'}
+                    </Link>
+                    {userRole === 'client' && (
+                      <>
+                        <Link
+                          to="/bookings"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          onClick={closeMenu}
+                        >
+                          My Bookings
+                        </Link>
+                        <Link
+                          to="/profile"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          onClick={closeMenu}
+                        >
+                          Profile Settings
+                        </Link>
+                      </>
+                    )}
+                    <button
+                      onClick={handleSignOut}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
               )}
-              {userRole === 'provider' && (
-                <Link to="/provider" className="btn btn-ghost btn-sm">
-                  Dashboard
-                </Link>
-              )}
-              <Link to="/profile" className="btn btn-outline btn-sm">
-                <User className="h-4 w-4 mr-2" />
-                Profile
-              </Link>
-            </>
+            </div>
           ) : (
             <>
               <Link to="/login" className="btn btn-ghost btn-sm">
@@ -120,102 +159,89 @@ const Header: React.FC = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div
-        className={cn(
-          'fixed inset-y-0 right-0 z-50 w-full bg-white p-6 shadow-lg transform transition-transform duration-300 ease-in-out md:hidden',
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        )}
-      >
-        <div className="flex items-center justify-between mb-8">
-          <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
-            <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center">
-              <Home className="text-white h-5 w-5" />
-            </div>
-            <span className="text-xl font-bold">HomeFix</span>
-          </Link>
-          <button onClick={closeMenu} className="text-gray-800">
-            <X className="h-6 w-6" />
-          </button>
-        </div>
+      {isMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-white border-t shadow-lg">
+          <nav className="container py-4">
+            <div className="flex flex-col gap-2">
+              <Link 
+                to="/" 
+                className={cn(
+                  "px-4 py-2 text-sm font-medium hover:bg-gray-50 rounded-md",
+                  isActive('/') && "text-primary"
+                )}
+                onClick={closeMenu}
+              >
+                Home
+              </Link>
+              <Link 
+                to="/services" 
+                className={cn(
+                  "px-4 py-2 text-sm font-medium hover:bg-gray-50 rounded-md",
+                  isActive('/services') && "text-primary"
+                )}
+                onClick={closeMenu}
+              >
+                Services
+              </Link>
 
-        <nav className="flex flex-col gap-4">
-          <Link
-            to="/"
-            onClick={closeMenu}
-            className={cn(
-              "flex items-center py-2 px-4 rounded-md text-sm font-medium hover:bg-muted transition-colors",
-              isActive('/') && "bg-muted text-primary"
-            )}
-          >
-            <Home className="h-5 w-5 mr-3" />
-            Home
-          </Link>
-          <Link
-            to="/services"
-            onClick={closeMenu}
-            className={cn(
-              "flex items-center py-2 px-4 rounded-md text-sm font-medium hover:bg-muted transition-colors",
-              isActive('/services') && "bg-muted text-primary"
-            )}
-          >
-            <Wrench className="h-5 w-5 mr-3" />
-            Services
-          </Link>
-          
-          <div className="border-t border-gray-200 my-4"></div>
-          
-          {isAuthenticated ? (
-            <>
-              {userRole === 'admin' && (
-                <Link
-                  to="/admin"
-                  onClick={closeMenu}
-                  className="flex items-center py-2 px-4 rounded-md text-sm font-medium hover:bg-muted transition-colors"
-                >
-                  <User className="h-5 w-5 mr-3" />
-                  Admin Dashboard
-                </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to={getDashboardLink()}
+                    className="px-4 py-2 text-sm font-medium hover:bg-gray-50 rounded-md"
+                    onClick={closeMenu}
+                  >
+                    {userRole === 'admin' ? 'Admin Dashboard' : 
+                     userRole === 'provider' ? 'Provider Dashboard' : 
+                     'My Dashboard'}
+                  </Link>
+                  {userRole === 'client' && (
+                    <>
+                      <Link
+                        to="/bookings"
+                        className="px-4 py-2 text-sm font-medium hover:bg-gray-50 rounded-md"
+                        onClick={closeMenu}
+                      >
+                        My Bookings
+                      </Link>
+                      <Link
+                        to="/profile"
+                        className="px-4 py-2 text-sm font-medium hover:bg-gray-50 rounded-md"
+                        onClick={closeMenu}
+                      >
+                        Profile Settings
+                      </Link>
+                    </>
+                  )}
+                  <button
+                    onClick={handleSignOut}
+                    className="px-4 py-2 text-sm font-medium hover:bg-gray-50 rounded-md text-left text-red-600"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 text-sm font-medium hover:bg-gray-50 rounded-md"
+                    onClick={closeMenu}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-md hover:bg-primary/90"
+                    onClick={closeMenu}
+                  >
+                    Register
+                  </Link>
+                </>
               )}
-              {userRole === 'provider' && (
-                <Link
-                  to="/provider"
-                  onClick={closeMenu}
-                  className="flex items-center py-2 px-4 rounded-md text-sm font-medium hover:bg-muted transition-colors"
-                >
-                  <Calendar className="h-5 w-5 mr-3" />
-                  Provider Dashboard
-                </Link>
-              )}
-              <Link
-                to="/profile"
-                onClick={closeMenu}
-                className="flex items-center py-2 px-4 rounded-md text-sm font-medium hover:bg-muted transition-colors"
-              >
-                <User className="h-5 w-5 mr-3" />
-                Profile
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                onClick={closeMenu}
-                className="w-full btn btn-outline"
-              >
-                <LogIn className="h-4 w-4 mr-2" />
-                Login
-              </Link>
-              <Link
-                to="/register"
-                onClick={closeMenu}
-                className="w-full btn btn-primary"
-              >
-                Register
-              </Link>
-            </>
-          )}
-        </nav>
-      </div>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };

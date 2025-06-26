@@ -21,8 +21,10 @@ const services: Service[] = [
     category: 'plumbing',
     description: 'Expert repair and installation of all types of pipes including PVC, copper, and galvanized steel. Our professional plumbers can handle leaks, blockages, and new installations with precision and care.',
     price: 85,
-    image: 'https://images.pexels.com/photos/5257518/pexels-photo-5257518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/5257518/pexels-photo-5257518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 2,
+    created_at: "",
+    updated_at: ""
   },
   {
     id: '2',
@@ -30,8 +32,10 @@ const services: Service[] = [
     category: 'electrical',
     description: 'Upgrade your electrical panel to safely handle your home\'s power needs with modern circuit breakers. Our licensed electricians ensure that your home\'s electrical system meets all safety codes and can handle your current and future power needs.',
     price: 250,
-    image: 'https://images.pexels.com/photos/2062048/pexels-photo-2062048.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/2062048/pexels-photo-2062048.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 4,
+    created_at: "",
+    updated_at: ""
   },
 ];
 
@@ -125,7 +129,7 @@ const ServiceDetailPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
           <div className="rounded-lg overflow-hidden">
             <img 
-              src={service.image} 
+              src={service.image_url} 
               alt={service.name}
               className="w-full h-full object-cover aspect-video"
             />

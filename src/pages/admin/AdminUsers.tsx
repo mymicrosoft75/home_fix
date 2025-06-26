@@ -24,7 +24,8 @@ const users: User[] = Array.from({ length: 20 }).map((_, i) => ({
   role: (['client', 'client', 'client', 'provider', 'admin'] as UserRole[])[i % 5],
   phone: `(${100 + i}) 555-${1000 + i}`,
   address: `${i + 1} Main St, Anytown, AN ${10000 + i}`,
-  createdAt: new Date(2023, i % 12, (i % 28) + 1).toISOString(),
+  created_at: new Date(2023, i % 12, (i % 28) + 1).toISOString(),
+  updated_at: new Date(2023, i % 12, (i % 28) + 1).toISOString(),
 }));
 
 const AdminUsers: React.FC = () => {
@@ -110,6 +111,7 @@ const AdminUsers: React.FC = () => {
                 value={roleFilter}
                 onChange={(e) => setRoleFilter(e.target.value as UserRole | 'all')}
                 className="form-input"
+                aria-label="Filter users by role"
               >
                 <option value="all">All Roles</option>
                 <option value="client">Clients</option>
@@ -170,7 +172,7 @@ const AdminUsers: React.FC = () => {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
-                    {new Date(user.createdAt).toLocaleDateString()}
+                    {new Date(user.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center space-x-2">

@@ -30,11 +30,11 @@ const upcomingBookings: Booking[] = Array.from({ length: 5 }).map((_, i) => ({
 
 // Client names for mock data
 const clientNames = [
-  'John Doe',
-  'Jane Smith',
-  'Emily Wilson',
-  'Michael Brown',
-  'Sarah Johnson',
+  'Dipu',
+  'Topu',
+  'Rashi',
+  'Samiran',
+  'Puja',
 ];
 
 // Service names for mock data

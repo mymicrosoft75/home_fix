@@ -21,15 +21,16 @@ import { formatCurrency } from '../../lib/utils';
 // Mock data - would come from API in real app
 const bookings: Booking[] = Array.from({ length: 20 }).map((_, i) => ({
   id: `booking-${i + 1}`,
-  clientId: `client-${i % 5 + 1}`,
-  providerId: `provider-${i % 3 + 1}`,
-  serviceId: `service-${i % 4 + 1}`,
+  client_id: `client-${i % 5 + 1}`,
+  provider_id: `provider-${i % 3 + 1}`,
+  service_id: `service-${i % 4 + 1}`,
   date: new Date(2025, 5, (i % 30) + 1).toISOString(),
-  timeSlot: `${9 + (i % 8)}:00`,
+  time_slot: `${9 + (i % 8)}:00`,
   status: (['pending', 'confirmed', 'completed', 'cancelled'] as BookingStatus[])[i % 4],
   total: 75 + (i % 5) * 25,
   notes: i % 3 === 0 ? 'Please bring all necessary tools and materials.' : undefined,
-  createdAt: new Date(2025, 4, (i % 28) + 1).toISOString(),
+  created_at: new Date(2025, 4, (i % 28) + 1).toISOString(),
+  updated_at: new Date(2025, 4, (i % 28) + 1).toISOString()
 }));
 
 // Client names for mock data
@@ -65,8 +66,8 @@ const AdminBookings: React.FC = () => {
   // Filter bookings based on search term and status
   const filteredBookings = bookings.filter((booking) => {
     // Search filter
-    const clientName = clientNames[parseInt(booking.clientId.split('-')[1]) - 1];
-    const serviceName = serviceNames[parseInt(booking.serviceId.split('-')[1]) - 1];
+    const clientName = clientNames[parseInt(booking.client_id.split('-')[1]) - 1];
+    const serviceName = serviceNames[parseInt(booking.service_id.split('-')[1]) - 1];
     
     const matchesSearch = 
       booking.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -154,6 +155,7 @@ const AdminBookings: React.FC = () => {
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as BookingStatus | 'all')}
                 className="form-input"
+                aria-label="Filter bookings by status"
               >
                 <option value="all">All Statuses</option>
                 <option value="pending">Pending</option>
@@ -191,9 +193,9 @@ const AdminBookings: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {currentBookings.map((booking) => {
-                const clientName = clientNames[parseInt(booking.clientId.split('-')[1]) - 1];
-                const serviceName = serviceNames[parseInt(booking.serviceId.split('-')[1]) - 1];
-                const providerName = providerNames[parseInt(booking.providerId.split('-')[1]) - 1];
+                const clientName = clientNames[parseInt(booking.client_id.split('-')[1]) - 1];
+                const serviceName = serviceNames[parseInt(booking.service_id.split('-')[1]) - 1];
+                const providerName = providerNames[parseInt(booking.provider_id.split('-')[1]) - 1];
                 
                 return (
                   <tr key={booking.id} className="hover:bg-muted/50 transition-colors">
@@ -215,7 +217,7 @@ const AdminBookings: React.FC = () => {
                     <td className="px-4 py-3 text-muted-foreground">
                       <div className="flex flex-col">
                         <span>{new Date(booking.date).toLocaleDateString()}</span>
-                        <span className="text-xs">{booking.timeSlot}</span>
+                        <span className="text-xs">{booking.time_slot}</span>
                       </div>
                     </td>
                     <td className="px-4 py-3 font-medium">

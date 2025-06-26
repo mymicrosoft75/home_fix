@@ -23,8 +23,10 @@ const services: Service[] = [
     category: 'plumbing',
     description: 'Expert repair and installation of all types of pipes including PVC, copper, and galvanized steel.',
     price: 85,
-    image: 'https://images.pexels.com/photos/5257518/pexels-photo-5257518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/5257518/pexels-photo-5257518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 2,
+    created_at: "",
+    updated_at: ""
   },
   {
     id: '2',
@@ -32,8 +34,10 @@ const services: Service[] = [
     category: 'electrical',
     description: 'Upgrade your electrical panel to safely handle your home\'s power needs with modern circuit breakers.',
     price: 250,
-    image: 'https://images.pexels.com/photos/2062048/pexels-photo-2062048.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/2062048/pexels-photo-2062048.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 4,
+    created_at: "",
+    updated_at: ""
   },
   {
     id: '3',
@@ -41,8 +45,10 @@ const services: Service[] = [
     category: 'cleaning',
     description: 'Comprehensive cleaning service covering all rooms, bathrooms, kitchen, and common areas.',
     price: 120,
-    image: 'https://images.pexels.com/photos/4107112/pexels-photo-4107112.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/4107112/pexels-photo-4107112.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 3,
+    created_at: "",
+    updated_at: ""
   },
   {
     id: '4',
@@ -50,8 +56,10 @@ const services: Service[] = [
     category: 'painting',
     description: 'Professional interior painting with premium paint and detailed preparation for flawless results.',
     price: 180,
-    image: 'https://images.pexels.com/photos/6444266/pexels-photo-6444266.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/6444266/pexels-photo-6444266.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 6,
+    created_at: "",
+    updated_at: ""
   },
   {
     id: '5',
@@ -59,8 +67,10 @@ const services: Service[] = [
     category: 'plumbing',
     description: 'Full bathroom plumbing services including toilet, sink, shower, and bathtub installation or repair.',
     price: 95,
-    image: 'https://images.pexels.com/photos/1454806/pexels-photo-1454806.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/1454806/pexels-photo-1454806.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 2,
+    created_at: "",
+    updated_at: ""
   },
   {
     id: '6',
@@ -68,8 +78,10 @@ const services: Service[] = [
     category: 'electrical',
     description: 'Professional installation of ceiling fans, chandeliers, recessed lighting, and other light fixtures.',
     price: 75,
-    image: 'https://images.pexels.com/photos/5691622/pexels-photo-5691622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/5691622/pexels-photo-5691622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 1,
+    created_at: "",
+    updated_at: ""
   },
   {
     id: '7',
@@ -77,8 +89,10 @@ const services: Service[] = [
     category: 'carpentry',
     description: 'Custom cabinet installation for kitchens, bathrooms, and other spaces with precise measurements.',
     price: 320,
-    image: 'https://images.pexels.com/photos/5824883/pexels-photo-5824883.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/5824883/pexels-photo-5824883.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 8,
+    created_at: "",
+    updated_at: ""
   },
   {
     id: '8',
@@ -86,8 +100,10 @@ const services: Service[] = [
     category: 'gardening',
     description: 'Regular garden maintenance including lawn mowing, pruning, weeding, and plant care.',
     price: 60,
-    image: 'https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image_url: 'https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     duration: 2,
+    created_at: "",
+    updated_at: ""
   },
 ];
 
@@ -102,7 +118,7 @@ const AdminServices: React.FC = () => {
     // Search filter
     const matchesSearch = 
       service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      service.description.toLowerCase().includes(searchTerm.toLowerCase());
+      (service.description?.toLowerCase() || '').includes(searchTerm.toLowerCase());
     
     // Category filter
     const matchesCategory = categoryFilter === 'all' || service.category === categoryFilter;
@@ -180,6 +196,7 @@ const AdminServices: React.FC = () => {
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value as ServiceCategory | 'all')}
                 className="form-input"
+                aria-label="Filter services by category"
               >
                 <option value="all">All Categories</option>
                 <option value="plumbing">Plumbing</option>
@@ -204,7 +221,7 @@ const AdminServices: React.FC = () => {
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="md:w-40 h-24 rounded-md overflow-hidden flex-shrink-0">
                   <img
-                    src={service.image}
+                    src={service.image_url}
                     alt={service.name}
                     className="w-full h-full object-cover"
                   />
