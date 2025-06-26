@@ -57,7 +57,7 @@ const HomePage: React.FC = () => {
     icon: string;
     category: ServiceCategory;
   }> = [
-    { name: 'Plumbing', icon: '🔧', category: 'plumbing' },
+    { name: 'Plumbing',  icon: '🔧', category: 'plumbing' },
     { name: 'Electrical', icon: '⚡', category: 'electrical' },
     { name: 'Cleaning', icon: '🧹', category: 'cleaning' },
     { name: 'Carpentry', icon: '🔨', category: 'carpentry' },
